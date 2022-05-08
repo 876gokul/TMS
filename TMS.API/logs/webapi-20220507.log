@@ -1,0 +1,863 @@
+[2022-05-07 01:37:49.665 +05:30  INF]  Entity Framework Core 6.0.0 initialized 'AppDbContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+[2022-05-07 01:38:30.809 +05:30  INF]  Entity Framework Core 6.0.0 initialized 'AppDbContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+[2022-05-07 01:38:40.757 +05:30  INF]  Executed DbCommand (6,490ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+CREATE DATABASE [TMS];
+[2022-05-07 01:38:41.835 +05:30  INF]  Executed DbCommand (1,066ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+IF SERVERPROPERTY('EngineEdition') <> 5
+BEGIN
+    ALTER DATABASE [TMS] SET READ_COMMITTED_SNAPSHOT ON;
+END;
+[2022-05-07 01:38:42.048 +05:30  INF]  Executed DbCommand (138ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+[2022-05-07 01:38:42.910 +05:30  INF]  Executed DbCommand (442ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [__EFMigrationsHistory] (
+    [MigrationId] nvarchar(150) NOT NULL,
+    [ProductVersion] nvarchar(32) NOT NULL,
+    CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+);
+[2022-05-07 01:38:42.918 +05:30  INF]  Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+[2022-05-07 01:38:43.080 +05:30  INF]  Executed DbCommand (143ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+[2022-05-07 01:38:43.155 +05:30  INF]  Executed DbCommand (65ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+[2022-05-07 01:38:43.290 +05:30  INF]  Applying migration '20220506200750_Initial'.
+[2022-05-07 01:38:43.910 +05:30  INF]  Executed DbCommand (167ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [AssignmentStatuses] (
+    [Id] int NOT NULL IDENTITY,
+    [Name] nvarchar(max) NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_AssignmentStatuses] PRIMARY KEY ([Id])
+);
+[2022-05-07 01:38:44.103 +05:30  INF]  Executed DbCommand (176ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [AttendanceStatuses] (
+    [Id] int NOT NULL IDENTITY,
+    [Name] nvarchar(max) NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_AttendanceStatuses] PRIMARY KEY ([Id])
+);
+[2022-05-07 01:38:44.111 +05:30  INF]  Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Departments] (
+    [Id] int NOT NULL IDENTITY,
+    [Name] nvarchar(max) NOT NULL,
+    [isDisabled] bit NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_Departments] PRIMARY KEY ([Id])
+);
+[2022-05-07 01:38:44.155 +05:30  INF]  Executed DbCommand (44ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [MOMStatuses] (
+    [Id] int NOT NULL IDENTITY,
+    [Name] nvarchar(max) NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_MOMStatuses] PRIMARY KEY ([Id])
+);
+[2022-05-07 01:38:44.255 +05:30  INF]  Executed DbCommand (99ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [ReviewStatuses] (
+    [Id] int NOT NULL IDENTITY,
+    [Name] nvarchar(max) NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_ReviewStatuses] PRIMARY KEY ([Id])
+);
+[2022-05-07 01:38:44.274 +05:30  INF]  Executed DbCommand (19ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Roles] (
+    [Id] int NOT NULL IDENTITY,
+    [Name] nvarchar(max) NOT NULL,
+    [isDisabled] bit NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_Roles] PRIMARY KEY ([Id])
+);
+[2022-05-07 01:38:44.454 +05:30  INF]  Executed DbCommand (179ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Courses] (
+    [Id] int NOT NULL IDENTITY,
+    [StatusId] int NOT NULL,
+    [DepartmentId] int NOT NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [Duration] nvarchar(max) NOT NULL,
+    [Description] nvarchar(max) NOT NULL,
+    [isDisabled] bit NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_Courses] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Courses_Departments_DepartmentId] FOREIGN KEY ([DepartmentId]) REFERENCES [Departments] ([Id]) ON DELETE CASCADE
+);
+[2022-05-07 01:38:44.595 +05:30  INF]  Executed DbCommand (140ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Users] (
+    [Id] int NOT NULL IDENTITY,
+    [RoleId] int NOT NULL,
+    [DepartmentId] int NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [UserName] nvarchar(max) NOT NULL,
+    [Password] nvarchar(max) NOT NULL,
+    [Email] nvarchar(max) NOT NULL,
+    [Image] varbinary(max) NULL,
+    [EmployeeId] nvarchar(max) NULL,
+    [isDisabled] bit NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_Users] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Users_Departments_DepartmentId] FOREIGN KEY ([DepartmentId]) REFERENCES [Departments] ([Id]),
+    CONSTRAINT [FK_Users_Roles_RoleId] FOREIGN KEY ([RoleId]) REFERENCES [Roles] ([Id]) ON DELETE CASCADE
+);
+[2022-05-07 01:38:44.658 +05:30  INF]  Executed DbCommand (63ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Topics] (
+    [Id] int NOT NULL IDENTITY,
+    [CourseId] int NOT NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [Duration] nvarchar(max) NOT NULL,
+    [Context] nvarchar(max) NOT NULL,
+    [isDisabled] bit NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_Topics] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Topics_Courses_CourseId] FOREIGN KEY ([CourseId]) REFERENCES [Courses] ([Id]) ON DELETE CASCADE
+);
+[2022-05-07 01:38:44.802 +05:30  INF]  Executed DbCommand (144ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [CourseFeedbacks] (
+    [Id] int NOT NULL IDENTITY,
+    [CourseId] int NOT NULL,
+    [OwnerId] int NOT NULL,
+    [Feedback] nvarchar(max) NOT NULL,
+    [Rating] real NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_CourseFeedbacks] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_CourseFeedbacks_Courses_CourseId] FOREIGN KEY ([CourseId]) REFERENCES [Courses] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_CourseFeedbacks_Users_OwnerId] FOREIGN KEY ([OwnerId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+[2022-05-07 01:38:44.866 +05:30  INF]  Executed DbCommand (63ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [CourseUser] (
+    [CoursesId] int NOT NULL,
+    [TraineesId] int NOT NULL,
+    CONSTRAINT [PK_CourseUser] PRIMARY KEY ([CoursesId], [TraineesId]),
+    CONSTRAINT [FK_CourseUser_Courses_CoursesId] FOREIGN KEY ([CoursesId]) REFERENCES [Courses] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_CourseUser_Users_TraineesId] FOREIGN KEY ([TraineesId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+[2022-05-07 01:38:45.308 +05:30  ERR]  Failed executing DbCommand (391ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Reviews] (
+    [Id] int NOT NULL IDENTITY,
+    [ReviewerId] int NOT NULL,
+    [StatusId] int NOT NULL,
+    [TraineeId] int NOT NULL,
+    [ReviewDate] nvarchar(max) NOT NULL,
+    [ReviewTime] nvarchar(max) NOT NULL,
+    [Mode] nvarchar(max) NOT NULL,
+    [isDisabled] bit NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_Reviews] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Reviews_ReviewStatuses_StatusId] FOREIGN KEY ([StatusId]) REFERENCES [ReviewStatuses] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_Reviews_Users_ReviewerId] FOREIGN KEY ([ReviewerId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_Reviews_Users_TraineeId] FOREIGN KEY ([TraineeId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+[2022-05-07 01:40:50.295 +05:30  INF]  Entity Framework Core 6.0.0 initialized 'AppDbContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+[2022-05-07 01:40:51.265 +05:30  INF]  Executed DbCommand (55ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+[2022-05-07 01:40:51.433 +05:30  INF]  Executed DbCommand (92ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+[2022-05-07 01:40:51.444 +05:30  INF]  Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+[2022-05-07 01:40:51.449 +05:30  INF]  Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+[2022-05-07 01:40:51.570 +05:30  INF]  Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+[2022-05-07 01:40:51.660 +05:30  INF]  Applying migration '20220506200750_Initial'.
+[2022-05-07 01:40:52.122 +05:30  INF]  Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [AssignmentStatuses] (
+    [Id] int NOT NULL IDENTITY,
+    [Name] nvarchar(max) NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_AssignmentStatuses] PRIMARY KEY ([Id])
+);
+[2022-05-07 01:40:52.131 +05:30  INF]  Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [AttendanceStatuses] (
+    [Id] int NOT NULL IDENTITY,
+    [Name] nvarchar(max) NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_AttendanceStatuses] PRIMARY KEY ([Id])
+);
+[2022-05-07 01:40:52.143 +05:30  INF]  Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Departments] (
+    [Id] int NOT NULL IDENTITY,
+    [Name] nvarchar(max) NOT NULL,
+    [isDisabled] bit NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_Departments] PRIMARY KEY ([Id])
+);
+[2022-05-07 01:40:52.155 +05:30  INF]  Executed DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [MOMStatuses] (
+    [Id] int NOT NULL IDENTITY,
+    [Name] nvarchar(max) NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_MOMStatuses] PRIMARY KEY ([Id])
+);
+[2022-05-07 01:40:52.195 +05:30  INF]  Executed DbCommand (39ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [ReviewStatuses] (
+    [Id] int NOT NULL IDENTITY,
+    [Name] nvarchar(max) NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_ReviewStatuses] PRIMARY KEY ([Id])
+);
+[2022-05-07 01:40:52.215 +05:30  INF]  Executed DbCommand (19ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Roles] (
+    [Id] int NOT NULL IDENTITY,
+    [Name] nvarchar(max) NOT NULL,
+    [isDisabled] bit NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_Roles] PRIMARY KEY ([Id])
+);
+[2022-05-07 01:40:52.263 +05:30  INF]  Executed DbCommand (48ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Courses] (
+    [Id] int NOT NULL IDENTITY,
+    [StatusId] int NOT NULL,
+    [DepartmentId] int NOT NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [Duration] nvarchar(max) NOT NULL,
+    [Description] nvarchar(max) NOT NULL,
+    [isDisabled] bit NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_Courses] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Courses_Departments_DepartmentId] FOREIGN KEY ([DepartmentId]) REFERENCES [Departments] ([Id]) ON DELETE CASCADE
+);
+[2022-05-07 01:40:52.323 +05:30  INF]  Executed DbCommand (34ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Users] (
+    [Id] int NOT NULL IDENTITY,
+    [RoleId] int NOT NULL,
+    [DepartmentId] int NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [UserName] nvarchar(max) NOT NULL,
+    [Password] nvarchar(max) NOT NULL,
+    [Email] nvarchar(max) NOT NULL,
+    [Image] varbinary(max) NULL,
+    [EmployeeId] nvarchar(max) NULL,
+    [isDisabled] bit NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_Users] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Users_Departments_DepartmentId] FOREIGN KEY ([DepartmentId]) REFERENCES [Departments] ([Id]),
+    CONSTRAINT [FK_Users_Roles_RoleId] FOREIGN KEY ([RoleId]) REFERENCES [Roles] ([Id]) ON DELETE CASCADE
+);
+[2022-05-07 01:40:52.347 +05:30  INF]  Executed DbCommand (23ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Topics] (
+    [Id] int NOT NULL IDENTITY,
+    [CourseId] int NOT NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [Duration] nvarchar(max) NOT NULL,
+    [Context] nvarchar(max) NOT NULL,
+    [isDisabled] bit NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_Topics] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Topics_Courses_CourseId] FOREIGN KEY ([CourseId]) REFERENCES [Courses] ([Id]) ON DELETE CASCADE
+);
+[2022-05-07 01:40:52.365 +05:30  INF]  Executed DbCommand (17ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [CourseFeedbacks] (
+    [Id] int NOT NULL IDENTITY,
+    [CourseId] int NOT NULL,
+    [OwnerId] int NOT NULL,
+    [Feedback] nvarchar(max) NOT NULL,
+    [Rating] real NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_CourseFeedbacks] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_CourseFeedbacks_Courses_CourseId] FOREIGN KEY ([CourseId]) REFERENCES [Courses] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_CourseFeedbacks_Users_OwnerId] FOREIGN KEY ([OwnerId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+[2022-05-07 01:40:52.378 +05:30  INF]  Executed DbCommand (13ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [CourseUser] (
+    [CoursesId] int NOT NULL,
+    [TraineesId] int NOT NULL,
+    CONSTRAINT [PK_CourseUser] PRIMARY KEY ([CoursesId], [TraineesId]),
+    CONSTRAINT [FK_CourseUser_Courses_CoursesId] FOREIGN KEY ([CoursesId]) REFERENCES [Courses] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_CourseUser_Users_TraineesId] FOREIGN KEY ([TraineesId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+[2022-05-07 01:40:52.486 +05:30  ERR]  Failed executing DbCommand (73ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Reviews] (
+    [Id] int NOT NULL IDENTITY,
+    [ReviewerId] int NOT NULL,
+    [StatusId] int NOT NULL,
+    [TraineeId] int NOT NULL,
+    [ReviewDate] nvarchar(max) NOT NULL,
+    [ReviewTime] nvarchar(max) NOT NULL,
+    [Mode] nvarchar(max) NOT NULL,
+    [isDisabled] bit NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_Reviews] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Reviews_ReviewStatuses_StatusId] FOREIGN KEY ([StatusId]) REFERENCES [ReviewStatuses] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_Reviews_Users_ReviewerId] FOREIGN KEY ([ReviewerId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_Reviews_Users_TraineeId] FOREIGN KEY ([TraineeId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+[2022-05-07 01:42:32.226 +05:30  INF]  Entity Framework Core 6.0.0 initialized 'AppDbContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+[2022-05-07 01:42:33.673 +05:30  INF]  Executed DbCommand (64ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+[2022-05-07 01:42:33.814 +05:30  INF]  Executed DbCommand (65ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+[2022-05-07 01:42:33.872 +05:30  INF]  Executed DbCommand (51ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+[2022-05-07 01:42:33.876 +05:30  INF]  Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+[2022-05-07 01:42:33.985 +05:30  INF]  Executed DbCommand (15ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+[2022-05-07 01:42:34.072 +05:30  INF]  Applying migration '20220506200750_Initial'.
+[2022-05-07 01:42:34.635 +05:30  INF]  Executed DbCommand (34ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [AssignmentStatuses] (
+    [Id] int NOT NULL IDENTITY,
+    [Name] nvarchar(max) NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_AssignmentStatuses] PRIMARY KEY ([Id])
+);
+[2022-05-07 01:42:34.752 +05:30  INF]  Executed DbCommand (116ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [AttendanceStatuses] (
+    [Id] int NOT NULL IDENTITY,
+    [Name] nvarchar(max) NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_AttendanceStatuses] PRIMARY KEY ([Id])
+);
+[2022-05-07 01:42:34.773 +05:30  INF]  Executed DbCommand (21ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Departments] (
+    [Id] int NOT NULL IDENTITY,
+    [Name] nvarchar(max) NOT NULL,
+    [isDisabled] bit NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_Departments] PRIMARY KEY ([Id])
+);
+[2022-05-07 01:42:34.781 +05:30  INF]  Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [MOMStatuses] (
+    [Id] int NOT NULL IDENTITY,
+    [Name] nvarchar(max) NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_MOMStatuses] PRIMARY KEY ([Id])
+);
+[2022-05-07 01:42:34.942 +05:30  INF]  Executed DbCommand (161ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [ReviewStatuses] (
+    [Id] int NOT NULL IDENTITY,
+    [Name] nvarchar(max) NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_ReviewStatuses] PRIMARY KEY ([Id])
+);
+[2022-05-07 01:42:34.958 +05:30  INF]  Executed DbCommand (15ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Roles] (
+    [Id] int NOT NULL IDENTITY,
+    [Name] nvarchar(max) NOT NULL,
+    [isDisabled] bit NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_Roles] PRIMARY KEY ([Id])
+);
+[2022-05-07 01:42:35.007 +05:30  INF]  Executed DbCommand (48ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Courses] (
+    [Id] int NOT NULL IDENTITY,
+    [StatusId] int NOT NULL,
+    [DepartmentId] int NOT NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [Duration] nvarchar(max) NOT NULL,
+    [Description] nvarchar(max) NOT NULL,
+    [isDisabled] bit NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_Courses] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Courses_Departments_DepartmentId] FOREIGN KEY ([DepartmentId]) REFERENCES [Departments] ([Id])
+);
+[2022-05-07 01:42:35.034 +05:30  INF]  Executed DbCommand (26ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Users] (
+    [Id] int NOT NULL IDENTITY,
+    [RoleId] int NOT NULL,
+    [DepartmentId] int NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [UserName] nvarchar(max) NOT NULL,
+    [Password] nvarchar(max) NOT NULL,
+    [Email] nvarchar(max) NOT NULL,
+    [Image] varbinary(max) NULL,
+    [EmployeeId] nvarchar(max) NULL,
+    [isDisabled] bit NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_Users] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Users_Departments_DepartmentId] FOREIGN KEY ([DepartmentId]) REFERENCES [Departments] ([Id]),
+    CONSTRAINT [FK_Users_Roles_RoleId] FOREIGN KEY ([RoleId]) REFERENCES [Roles] ([Id])
+);
+[2022-05-07 01:42:35.146 +05:30  INF]  Executed DbCommand (112ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Topics] (
+    [Id] int NOT NULL IDENTITY,
+    [CourseId] int NOT NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [Duration] nvarchar(max) NOT NULL,
+    [Context] nvarchar(max) NOT NULL,
+    [isDisabled] bit NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_Topics] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Topics_Courses_CourseId] FOREIGN KEY ([CourseId]) REFERENCES [Courses] ([Id])
+);
+[2022-05-07 01:42:35.193 +05:30  INF]  Executed DbCommand (45ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [CourseFeedbacks] (
+    [Id] int NOT NULL IDENTITY,
+    [CourseId] int NOT NULL,
+    [OwnerId] int NOT NULL,
+    [Feedback] nvarchar(max) NOT NULL,
+    [Rating] real NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_CourseFeedbacks] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_CourseFeedbacks_Courses_CourseId] FOREIGN KEY ([CourseId]) REFERENCES [Courses] ([Id]),
+    CONSTRAINT [FK_CourseFeedbacks_Users_OwnerId] FOREIGN KEY ([OwnerId]) REFERENCES [Users] ([Id])
+);
+[2022-05-07 01:42:35.224 +05:30  INF]  Executed DbCommand (30ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [CourseUser] (
+    [CoursesId] int NOT NULL,
+    [TraineesId] int NOT NULL,
+    CONSTRAINT [PK_CourseUser] PRIMARY KEY ([CoursesId], [TraineesId]),
+    CONSTRAINT [FK_CourseUser_Courses_CoursesId] FOREIGN KEY ([CoursesId]) REFERENCES [Courses] ([Id]),
+    CONSTRAINT [FK_CourseUser_Users_TraineesId] FOREIGN KEY ([TraineesId]) REFERENCES [Users] ([Id])
+);
+[2022-05-07 01:42:35.313 +05:30  INF]  Executed DbCommand (89ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Reviews] (
+    [Id] int NOT NULL IDENTITY,
+    [ReviewerId] int NOT NULL,
+    [StatusId] int NOT NULL,
+    [TraineeId] int NOT NULL,
+    [ReviewDate] nvarchar(max) NOT NULL,
+    [ReviewTime] nvarchar(max) NOT NULL,
+    [Mode] nvarchar(max) NOT NULL,
+    [isDisabled] bit NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_Reviews] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Reviews_ReviewStatuses_StatusId] FOREIGN KEY ([StatusId]) REFERENCES [ReviewStatuses] ([Id]),
+    CONSTRAINT [FK_Reviews_Users_ReviewerId] FOREIGN KEY ([ReviewerId]) REFERENCES [Users] ([Id]),
+    CONSTRAINT [FK_Reviews_Users_TraineeId] FOREIGN KEY ([TraineeId]) REFERENCES [Users] ([Id])
+);
+[2022-05-07 01:42:35.460 +05:30  INF]  Executed DbCommand (146ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [TraineeFeedbacks] (
+    [Id] int NOT NULL IDENTITY,
+    [TraineeId] int NOT NULL,
+    [TrainerId] int NOT NULL,
+    [CourseId] int NOT NULL,
+    [Feedback] nvarchar(max) NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_TraineeFeedbacks] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_TraineeFeedbacks_Courses_CourseId] FOREIGN KEY ([CourseId]) REFERENCES [Courses] ([Id]),
+    CONSTRAINT [FK_TraineeFeedbacks_Users_TraineeId] FOREIGN KEY ([TraineeId]) REFERENCES [Users] ([Id]),
+    CONSTRAINT [FK_TraineeFeedbacks_Users_TrainerId] FOREIGN KEY ([TrainerId]) REFERENCES [Users] ([Id])
+);
+[2022-05-07 01:42:35.528 +05:30  INF]  Executed DbCommand (67ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Assigments] (
+    [Id] int NOT NULL IDENTITY,
+    [TopicId] int NOT NULL,
+    [StatusId] int NOT NULL,
+    [OwnerId] int NOT NULL,
+    [Document] varbinary(max) NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_Assigments] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Assigments_AssignmentStatuses_StatusId] FOREIGN KEY ([StatusId]) REFERENCES [AssignmentStatuses] ([Id]),
+    CONSTRAINT [FK_Assigments_Topics_TopicId] FOREIGN KEY ([TopicId]) REFERENCES [Topics] ([Id]),
+    CONSTRAINT [FK_Assigments_Users_OwnerId] FOREIGN KEY ([OwnerId]) REFERENCES [Users] ([Id])
+);
+[2022-05-07 01:42:35.614 +05:30  INF]  Executed DbCommand (86ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Attendances] (
+    [Id] int NOT NULL IDENTITY,
+    [TopicId] int NOT NULL,
+    [StatusId] int NOT NULL,
+    [OwnerId] int NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_Attendances] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Attendances_AttendanceStatuses_StatusId] FOREIGN KEY ([StatusId]) REFERENCES [AttendanceStatuses] ([Id]),
+    CONSTRAINT [FK_Attendances_Topics_TopicId] FOREIGN KEY ([TopicId]) REFERENCES [Topics] ([Id]),
+    CONSTRAINT [FK_Attendances_Users_OwnerId] FOREIGN KEY ([OwnerId]) REFERENCES [Users] ([Id])
+);
+[2022-05-07 01:42:35.726 +05:30  INF]  Executed DbCommand (111ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [MOMs] (
+    [Id] int NOT NULL IDENTITY,
+    [ReviewId] int NOT NULL,
+    [StatusId] int NOT NULL,
+    [OwnerId] int NOT NULL,
+    [Agenda] nvarchar(max) NOT NULL,
+    [MeetingNotes] nvarchar(max) NOT NULL,
+    [PurposeOfMeeting] nvarchar(max) NOT NULL,
+    [CreatedOn] datetime2 NULL,
+    [CreatedBy] int NULL,
+    [UpdatedOn] datetime2 NULL,
+    [UpdatedBy] int NULL,
+    CONSTRAINT [PK_MOMs] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_MOMs_MOMStatuses_StatusId] FOREIGN KEY ([StatusId]) REFERENCES [MOMStatuses] ([Id]),
+    CONSTRAINT [FK_MOMs_Reviews_ReviewId] FOREIGN KEY ([ReviewId]) REFERENCES [Reviews] ([Id]),
+    CONSTRAINT [FK_MOMs_Users_OwnerId] FOREIGN KEY ([OwnerId]) REFERENCES [Users] ([Id])
+);
+[2022-05-07 01:42:35.891 +05:30  INF]  Executed DbCommand (164ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Assigments_OwnerId] ON [Assigments] ([OwnerId]);
+[2022-05-07 01:42:35.930 +05:30  INF]  Executed DbCommand (38ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Assigments_StatusId] ON [Assigments] ([StatusId]);
+[2022-05-07 01:42:35.974 +05:30  INF]  Executed DbCommand (44ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Assigments_TopicId] ON [Assigments] ([TopicId]);
+[2022-05-07 01:42:35.980 +05:30  INF]  Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Attendances_OwnerId] ON [Attendances] ([OwnerId]);
+[2022-05-07 01:42:36.038 +05:30  INF]  Executed DbCommand (58ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Attendances_StatusId] ON [Attendances] ([StatusId]);
+[2022-05-07 01:42:36.129 +05:30  INF]  Executed DbCommand (91ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Attendances_TopicId] ON [Attendances] ([TopicId]);
+[2022-05-07 01:42:36.139 +05:30  INF]  Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_CourseFeedbacks_CourseId] ON [CourseFeedbacks] ([CourseId]);
+[2022-05-07 01:42:36.158 +05:30  INF]  Executed DbCommand (18ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_CourseFeedbacks_OwnerId] ON [CourseFeedbacks] ([OwnerId]);
+[2022-05-07 01:42:36.195 +05:30  INF]  Executed DbCommand (36ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Courses_DepartmentId] ON [Courses] ([DepartmentId]);
+[2022-05-07 01:42:36.205 +05:30  INF]  Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_CourseUser_TraineesId] ON [CourseUser] ([TraineesId]);
+[2022-05-07 01:42:36.209 +05:30  INF]  Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_MOMs_OwnerId] ON [MOMs] ([OwnerId]);
+[2022-05-07 01:42:36.214 +05:30  INF]  Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_MOMs_ReviewId] ON [MOMs] ([ReviewId]);
+[2022-05-07 01:42:36.220 +05:30  INF]  Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_MOMs_StatusId] ON [MOMs] ([StatusId]);
+[2022-05-07 01:42:36.228 +05:30  INF]  Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Reviews_ReviewerId] ON [Reviews] ([ReviewerId]);
+[2022-05-07 01:42:36.256 +05:30  INF]  Executed DbCommand (28ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Reviews_StatusId] ON [Reviews] ([StatusId]);
+[2022-05-07 01:42:36.264 +05:30  INF]  Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Reviews_TraineeId] ON [Reviews] ([TraineeId]);
+[2022-05-07 01:42:36.271 +05:30  INF]  Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Topics_CourseId] ON [Topics] ([CourseId]);
+[2022-05-07 01:42:36.275 +05:30  INF]  Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_TraineeFeedbacks_CourseId] ON [TraineeFeedbacks] ([CourseId]);
+[2022-05-07 01:42:36.292 +05:30  INF]  Executed DbCommand (16ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_TraineeFeedbacks_TraineeId] ON [TraineeFeedbacks] ([TraineeId]);
+[2022-05-07 01:42:36.298 +05:30  INF]  Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_TraineeFeedbacks_TrainerId] ON [TraineeFeedbacks] ([TrainerId]);
+[2022-05-07 01:42:36.305 +05:30  INF]  Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Users_DepartmentId] ON [Users] ([DepartmentId]);
+[2022-05-07 01:42:36.312 +05:30  INF]  Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Users_RoleId] ON [Users] ([RoleId]);
+[2022-05-07 01:42:36.599 +05:30  INF]  Executed DbCommand (286ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20220506200750_Initial', N'6.0.0');
+[2022-05-07 01:55:25.445 +05:30  INF]  User profile is available. Using 'C:\Users\ThisPc\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+[2022-05-07 01:55:27.763 +05:30  INF]  Now listening on: https://localhost:7161
+[2022-05-07 01:55:27.769 +05:30  INF]  Now listening on: http://localhost:5148
+[2022-05-07 01:55:27.795 +05:30  INF]  Application started. Press Ctrl+C to shut down.
+[2022-05-07 01:55:27.801 +05:30  INF]  Hosting environment: Development
+[2022-05-07 01:55:27.806 +05:30  INF]  Content root path: E:\TMS\TMS.API\
+[2022-05-07 01:59:03.930 +05:30  INF]  Request starting HTTP/2 GET https://localhost:7161/swagger/index.html - -
+[2022-05-07 01:59:05.996 +05:30  INF]  Request finished HTTP/2 GET https://localhost:7161/swagger/index.html - - - 200 - text/html;charset=utf-8 2364.4218ms
+[2022-05-07 01:59:11.306 +05:30  INF]  Request starting HTTP/2 GET https://localhost:7161/swagger/v1/swagger.json - -
+[2022-05-07 01:59:12.995 +05:30  INF]  Request finished HTTP/2 GET https://localhost:7161/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 1688.8491ms
+[2022-05-07 02:05:58.361 +05:30  INF]  Request starting HTTP/2 POST https://localhost:7161/user/create multipart/form-data;+boundary=----WebKitFormBoundarylAi4TZoGxzJgqeZx 25435
+[2022-05-07 02:05:58.562 +05:30  INF]  Executing endpoint 'TMS.API.Controllers.UserController.CreateUser (TMS.API)'
+[2022-05-07 02:05:59.156 +05:30  INF]  Route matched with {action = "CreateUser", controller = "User"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult CreateUser(TMS.DAL.User) on controller TMS.API.Controllers.UserController (TMS.API).
+[2022-05-07 02:06:37.324 +05:30  INF]  Executing ObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ProblemDetails'.
+[2022-05-07 02:06:40.686 +05:30  INF]  Executed action TMS.API.Controllers.UserController.CreateUser (TMS.API) in 41508.0823ms
+[2022-05-07 02:06:40.710 +05:30  INF]  Executed endpoint 'TMS.API.Controllers.UserController.CreateUser (TMS.API)'
+[2022-05-07 02:06:40.715 +05:30  INF]  Request finished HTTP/2 POST https://localhost:7161/user/create multipart/form-data;+boundary=----WebKitFormBoundarylAi4TZoGxzJgqeZx 25435 - 415 175 application/problem+json;+charset=utf-8 42355.3881ms
+[2022-05-07 02:10:04.032 +05:30  INF]  User profile is available. Using 'C:\Users\ThisPc\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+[2022-05-07 02:10:06.349 +05:30  INF]  Now listening on: https://localhost:7161
+[2022-05-07 02:10:06.355 +05:30  INF]  Now listening on: http://localhost:5148
+[2022-05-07 02:10:06.375 +05:30  INF]  Application started. Press Ctrl+C to shut down.
+[2022-05-07 02:10:06.381 +05:30  INF]  Hosting environment: Development
+[2022-05-07 02:10:06.391 +05:30  INF]  Content root path: E:\TMS\TMS.API\
+[2022-05-07 02:10:15.263 +05:30  INF]  Request starting HTTP/2 GET https://localhost:7161/ - -
+[2022-05-07 02:10:15.711 +05:30  INF]  Request finished HTTP/2 GET https://localhost:7161/ - - - 404 0 - 474.7326ms
+[2022-05-07 02:10:18.118 +05:30  INF]  Request starting HTTP/2 POST https://localhost:7161/user/create application/x-www-form-urlencoded 25435
+[2022-05-07 02:10:18.216 +05:30  INF]  Executing endpoint 'TMS.API.Controllers.UserController.CreateUser (TMS.API)'
+[2022-05-07 02:10:18.691 +05:30  INF]  Route matched with {action = "CreateUser", controller = "User"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult CreateUser(TMS.DAL.User) on controller TMS.API.Controllers.UserController (TMS.API).
+[2022-05-07 02:10:42.220 +05:30  INF]  Executed action TMS.API.Controllers.UserController.CreateUser (TMS.API) in 23506.9641ms
+[2022-05-07 02:10:42.253 +05:30  INF]  Executed endpoint 'TMS.API.Controllers.UserController.CreateUser (TMS.API)'
+[2022-05-07 02:10:42.888 +05:30  ERR]  An unhandled exception has occurred while executing the request.
+System.ArgumentException: The key '�[�2�����Ƭ�MǑ�f>b)7���g.�b�X���f���Ӧ�	dm:K3|���������D�Ζ"C1zѪ��ri�sGq"����ĬKf��$r�P�jc܉���ҥX�eF��O7�m>�A3�G��c���A�F��4⼴-�[��i*��%�O<s[�����-���au��1������%rw�;�F:��}��k%Z��j����<���QU���w)�7���Q�6���pA���6�1���)D�Q�)4����j'ʀ54��@R�e��W�ʬ��ao��Ԫn���k�<ۨ���-�%IG�C�Z,��Y�^�%�D��D�<�a�' is invalid JQuery syntax because it is missing a closing bracket. (Parameter 'key')
+   at Microsoft.AspNetCore.Mvc.ModelBinding.JQueryKeyValuePairNormalizer.NormalizeJQueryToMvc(StringBuilder builder, String key)
+   at Microsoft.AspNetCore.Mvc.ModelBinding.JQueryKeyValuePairNormalizer.GetValues(IEnumerable`1 originalValues, Int32 valueCount)
+   at Microsoft.AspNetCore.Mvc.ModelBinding.JQueryFormValueProviderFactory.AddValueProviderAsync(ValueProviderFactoryContext context)
+   at Microsoft.AspNetCore.Mvc.ModelBinding.CompositeValueProvider.CreateAsync(ActionContext actionContext, IList`1 factories)
+   at Microsoft.AspNetCore.Mvc.ModelBinding.CompositeValueProvider.TryCreateAsync(ActionContext actionContext, IList`1 factories)
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerBinderDelegateProvider.<>c__DisplayClass0_0.<<CreateBinderDelegate>g__Bind|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+[2022-05-07 02:10:43.002 +05:30  INF]  Request finished HTTP/2 POST https://localhost:7161/user/create application/x-www-form-urlencoded 25435 - 500 - text/plain;+charset=utf-8 24883.9930ms
+[2022-05-07 02:23:09.873 +05:30  INF]  User profile is available. Using 'C:\Users\ThisPc\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+[2022-05-07 02:23:12.699 +05:30  INF]  Now listening on: https://localhost:7161
+[2022-05-07 02:23:12.702 +05:30  INF]  Now listening on: http://localhost:5148
+[2022-05-07 02:23:12.718 +05:30  INF]  Application started. Press Ctrl+C to shut down.
+[2022-05-07 02:23:12.722 +05:30  INF]  Hosting environment: Development
+[2022-05-07 02:23:12.725 +05:30  INF]  Content root path: E:\TMS\TMS.API\
+[2022-05-07 02:23:15.044 +05:30  INF]  Request starting HTTP/2 GET https://localhost:7161/ - -
+[2022-05-07 02:23:15.395 +05:30  INF]  Request finished HTTP/2 GET https://localhost:7161/ - - - 404 0 - 332.7014ms
+[2022-05-07 02:23:24.267 +05:30  INF]  Request starting HTTP/2 POST https://localhost:7161/user/create application/x-www-form-urlencoded 33643
+[2022-05-07 02:23:24.490 +05:30  INF]  Executing endpoint 'TMS.API.Controllers.UserController.CreateUser (TMS.API)'
+[2022-05-07 02:23:24.997 +05:30  INF]  Route matched with {action = "CreateUser", controller = "User"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult CreateUser(TMS.DAL.User) on controller TMS.API.Controllers.UserController (TMS.API).
+[2022-05-07 02:23:48.482 +05:30  INF]  Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+[2022-05-07 02:23:49.410 +05:30  INF]  Executed action TMS.API.Controllers.UserController.CreateUser (TMS.API) in 24390.5642ms
+[2022-05-07 02:23:49.419 +05:30  INF]  Executed endpoint 'TMS.API.Controllers.UserController.CreateUser (TMS.API)'
+[2022-05-07 02:23:49.425 +05:30  INF]  Request finished HTTP/2 POST https://localhost:7161/user/create application/x-www-form-urlencoded 33643 - 400 419 application/problem+json;+charset=utf-8 25157.2868ms
+[2022-05-07 02:25:27.408 +05:30  INF]  Request starting HTTP/2 POST https://localhost:7161/user/create application/x-www-form-urlencoded 33753
+[2022-05-07 02:25:27.418 +05:30  INF]  Executing endpoint 'TMS.API.Controllers.UserController.CreateUser (TMS.API)'
+[2022-05-07 02:25:27.418 +05:30  INF]  Route matched with {action = "CreateUser", controller = "User"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult CreateUser(TMS.DAL.User) on controller TMS.API.Controllers.UserController (TMS.API).
+[2022-05-07 02:25:40.308 +05:30  INF]  Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+[2022-05-07 02:25:40.310 +05:30  INF]  Executed action TMS.API.Controllers.UserController.CreateUser (TMS.API) in 12891.2562ms
+[2022-05-07 02:25:40.310 +05:30  INF]  Executed endpoint 'TMS.API.Controllers.UserController.CreateUser (TMS.API)'
+[2022-05-07 02:25:40.311 +05:30  INF]  Request finished HTTP/2 POST https://localhost:7161/user/create application/x-www-form-urlencoded 33753 - 400 419 application/problem+json;+charset=utf-8 12902.1915ms
+[2022-05-07 02:27:26.858 +05:30  INF]  User profile is available. Using 'C:\Users\ThisPc\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+[2022-05-07 02:27:28.115 +05:30  INF]  Now listening on: https://localhost:7161
+[2022-05-07 02:27:28.123 +05:30  INF]  Now listening on: http://localhost:5148
+[2022-05-07 02:27:28.143 +05:30  INF]  Application started. Press Ctrl+C to shut down.
+[2022-05-07 02:27:28.149 +05:30  INF]  Hosting environment: Development
+[2022-05-07 02:27:28.157 +05:30  INF]  Content root path: E:\TMS\TMS.API\
+[2022-05-07 02:27:29.690 +05:30  INF]  Request starting HTTP/2 GET https://localhost:7161/ - -
+[2022-05-07 02:27:29.951 +05:30  INF]  Request finished HTTP/2 GET https://localhost:7161/ - - - 404 0 - 272.7538ms
+[2022-05-07 02:27:35.732 +05:30  INF]  Request starting HTTP/2 POST https://localhost:7161/user/create application/x-www-form-urlencoded 33753
+[2022-05-07 02:27:35.748 +05:30  INF]  Executing endpoint 'TMS.API.Controllers.UserController.CreateUser (TMS.API)'
+[2022-05-07 02:27:35.835 +05:30  INF]  Route matched with {action = "CreateUser", controller = "User"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult CreateUser(TMS.DAL.User) on controller TMS.API.Controllers.UserController (TMS.API).
+[2022-05-07 02:27:47.597 +05:30  INF]  Executing ObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ProblemDetails'.
+[2022-05-07 02:27:48.162 +05:30  INF]  Executed action TMS.API.Controllers.UserController.CreateUser (TMS.API) in 12301.3945ms
+[2022-05-07 02:27:48.165 +05:30  INF]  Executed endpoint 'TMS.API.Controllers.UserController.CreateUser (TMS.API)'
+[2022-05-07 02:27:48.174 +05:30  INF]  Request finished HTTP/2 POST https://localhost:7161/user/create application/x-www-form-urlencoded 33753 - 415 175 application/problem+json;+charset=utf-8 12442.0747ms
+[2022-05-07 02:30:04.398 +05:30  INF]  Request starting HTTP/2 POST https://localhost:7161/user/create application/x-www-form-urlencoded 33755
+[2022-05-07 02:30:04.407 +05:30  INF]  Executing endpoint 'TMS.API.Controllers.UserController.CreateUser (TMS.API)'
+[2022-05-07 02:30:04.408 +05:30  INF]  Route matched with {action = "CreateUser", controller = "User"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult CreateUser(TMS.DAL.User) on controller TMS.API.Controllers.UserController (TMS.API).
+[2022-05-07 02:30:14.732 +05:30  INF]  Executing ObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ProblemDetails'.
+[2022-05-07 02:30:14.734 +05:30  INF]  Executed action TMS.API.Controllers.UserController.CreateUser (TMS.API) in 10325.7921ms
+[2022-05-07 02:30:14.734 +05:30  INF]  Executed endpoint 'TMS.API.Controllers.UserController.CreateUser (TMS.API)'
+[2022-05-07 02:30:14.734 +05:30  INF]  Request finished HTTP/2 POST https://localhost:7161/user/create application/x-www-form-urlencoded 33755 - 415 175 application/problem+json;+charset=utf-8 10337.5668ms
+[2022-05-07 02:31:09.109 +05:30  INF]  Request starting HTTP/2 POST https://localhost:7161/user/create multipart/form-data;+boundary=----WebKitFormBoundaryBrJN3PUbqKKL9j50 33753
+[2022-05-07 02:31:09.110 +05:30  INF]  Executing endpoint 'TMS.API.Controllers.UserController.CreateUser (TMS.API)'
+[2022-05-07 02:31:09.110 +05:30  INF]  Route matched with {action = "CreateUser", controller = "User"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult CreateUser(TMS.DAL.User) on controller TMS.API.Controllers.UserController (TMS.API).
+[2022-05-07 02:31:19.201 +05:30  INF]  Executing ObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ProblemDetails'.
+[2022-05-07 02:31:19.201 +05:30  INF]  Executed action TMS.API.Controllers.UserController.CreateUser (TMS.API) in 10091.2371ms
+[2022-05-07 02:31:19.201 +05:30  INF]  Executed endpoint 'TMS.API.Controllers.UserController.CreateUser (TMS.API)'
+[2022-05-07 02:31:19.202 +05:30  INF]  Request finished HTTP/2 POST https://localhost:7161/user/create multipart/form-data;+boundary=----WebKitFormBoundaryBrJN3PUbqKKL9j50 33753 - 415 175 application/problem+json;+charset=utf-8 10092.7874ms
+[2022-05-07 20:53:33.745 +05:30  INF]  Request starting HTTP/2 GET https://localhost:7161/swagger/v1/swagger.json - -
+[2022-05-07 20:53:36.337 +05:30  INF]  Request finished HTTP/2 GET https://localhost:7161/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 2592.1246ms
+[2022-05-07 23:37:55.208 +05:30  INF]  User profile is available. Using 'C:\Users\ThisPc\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+[2022-05-07 23:37:59.723 +05:30  INF]  Now listening on: https://localhost:7161
+[2022-05-07 23:37:59.724 +05:30  INF]  Now listening on: http://localhost:5148
+[2022-05-07 23:37:59.740 +05:30  INF]  Application started. Press Ctrl+C to shut down.
+[2022-05-07 23:37:59.740 +05:30  INF]  Hosting environment: Development
+[2022-05-07 23:37:59.741 +05:30  INF]  Content root path: E:\TMS\TMS.API\
+[2022-05-07 23:39:05.856 +05:30  INF]  Request starting HTTP/2 GET https://localhost:7161/ - -
+[2022-05-07 23:39:06.523 +05:30  INF]  Request finished HTTP/2 GET https://localhost:7161/ - - - 404 0 - 673.5503ms
+[2022-05-07 23:39:15.201 +05:30  INF]  Request starting HTTP/2 GET https://localhost:7161/swagger/index.html - -
+[2022-05-07 23:39:15.926 +05:30  INF]  Request finished HTTP/2 GET https://localhost:7161/swagger/index.html - - - 200 - text/html;charset=utf-8 724.6003ms
+[2022-05-07 23:39:17.323 +05:30  INF]  Request starting HTTP/2 GET https://localhost:7161/swagger/v1/swagger.json - -
+[2022-05-07 23:39:18.055 +05:30  INF]  Request finished HTTP/2 GET https://localhost:7161/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 731.1808ms
+[2022-05-07 23:39:29.381 +05:30  INF]  Request starting HTTP/2 GET https://localhost:7161/swagger/index.html - -
+[2022-05-07 23:39:29.384 +05:30  INF]  Request finished HTTP/2 GET https://localhost:7161/swagger/index.html - - - 200 - text/html;charset=utf-8 1.9669ms
+[2022-05-07 23:39:30.088 +05:30  INF]  Request starting HTTP/2 GET https://localhost:7161/swagger/v1/swagger.json - -
+[2022-05-07 23:39:30.126 +05:30  INF]  Request finished HTTP/2 GET https://localhost:7161/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 37.8985ms
+[2022-05-07 23:40:01.747 +05:30  INF]  Application is shutting down...
+[2022-05-07 23:41:04.794 +05:30  INF]  User profile is available. Using 'C:\Users\ThisPc\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+[2022-05-07 23:41:06.060 +05:30  INF]  Now listening on: https://localhost:7161
+[2022-05-07 23:41:06.061 +05:30  INF]  Now listening on: http://localhost:5148
+[2022-05-07 23:41:06.077 +05:30  INF]  Application started. Press Ctrl+C to shut down.
+[2022-05-07 23:41:06.077 +05:30  INF]  Hosting environment: Development
+[2022-05-07 23:41:06.077 +05:30  INF]  Content root path: E:\TMS\TMS.API\
+[2022-05-07 23:41:12.631 +05:30  INF]  Request starting HTTP/2 GET https://localhost:7161/swagger/index.html - -
+[2022-05-07 23:41:13.005 +05:30  INF]  Request finished HTTP/2 GET https://localhost:7161/swagger/index.html - - - 200 - text/html;charset=utf-8 382.6287ms
+[2022-05-07 23:41:13.880 +05:30  INF]  Request starting HTTP/2 GET https://localhost:7161/swagger/v1/swagger.json - -
+[2022-05-07 23:41:14.298 +05:30  INF]  Request finished HTTP/2 GET https://localhost:7161/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 417.7250ms
+[2022-05-07 23:42:33.298 +05:30  INF]  Request starting HTTP/2 POST https://localhost:7161/User/Create application/json-patch+json 33161
+[2022-05-07 23:42:33.325 +05:30  INF]  Executing endpoint 'TMS.API.Controllers.UserController.CreateUser (TMS.API)'
+[2022-05-07 23:42:33.540 +05:30  INF]  Route matched with {action = "CreateUser", controller = "User"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult CreateUser(TMS.BAL.POSTUserDTO) on controller TMS.API.Controllers.UserController (TMS.API).
+[2022-05-07 23:42:39.327 +05:30  INF]  Entity Framework Core 6.0.0 initialized 'AppDbContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+[2022-05-07 23:42:46.635 +05:30  ERR]  Failed executing DbCommand (1,855ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (DbType = DateTime2), @p2='?' (DbType = Int32), @p3='?' (Size = 4000), @p4='?' (Size = 4000), @p5='?' (Size = -1) (DbType = Binary), @p6='?' (Size = 4000), @p7='?' (Size = 4000), @p8='?' (DbType = Int32), @p9='?' (DbType = Int32), @p10='?' (DbType = DateTime2), @p11='?' (Size = 4000), @p12='?' (Size = 4000), @p13='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+SET NOCOUNT ON;
+INSERT INTO [Users] ([CreatedBy], [CreatedOn], [DepartmentId], [Email], [EmployeeId], [Image], [Name], [Password], [RoleId], [UpdatedBy], [UpdatedOn], [UserName], [base64], [isDisabled])
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13);
+SELECT [Id]
+FROM [Users]
+WHERE @@ROWCOUNT = 1 AND [Id] = scope_identity();
+[2022-05-07 23:42:48.206 +05:30  ERR]  An exception occurred in the database while saving changes for context type 'TMS.API.AppDbContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'base64'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at Microsoft.Data.SqlClient.SqlDataReader.get_MetaData()
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+ClientConnectionId:304fe614-3ea5-4924-8eaa-7634690d1c3d
+Error Number:207,State:1,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChanges(IList`1 entries)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.<>c.<SaveChanges>b__104_0(DbContext _, ValueTuple`2 t)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'base64'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at Microsoft.Data.SqlClient.SqlDataReader.get_MetaData()
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+ClientConnectionId:304fe614-3ea5-4924-8eaa-7634690d1c3d
+Error Number:207,State:1,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChanges(IList`1 entries)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.<>c.<SaveChanges>b__104_0(DbContext _, ValueTuple`2 t)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+[2022-05-07 23:42:48.222 +05:30  FTL]  An Critical error occured in User services. Some external factors are involved. please check the log files to know more about it
+[2022-05-07 23:42:48.392 +05:30  WRN]  There was an error in creating the user. please check the user service for more information
+[2022-05-07 23:42:48.395 +05:30  ERR]  error thrown by user service Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'base64'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at Microsoft.Data.SqlClient.SqlDataReader.get_MetaData()
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+ClientConnectionId:304fe614-3ea5-4924-8eaa-7634690d1c3d
+Error Number:207,State:1,Class:16
+   --- End of inner exception stack trace ---
+   at TMS.API.Services.UserService.CreateUser(POSTUserDTO user) in E:\TMS\TMS.API\Services\UserService.cs:line 109
+   at TMS.API.Controllers.UserController.CreateUser(POSTUserDTO user) in E:\TMS\TMS.API\Controllers\UserController.cs:line 102
+[2022-05-07 23:42:48.550 +05:30  INF]  Executing ObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ProblemDetails'.
+[2022-05-07 23:42:48.800 +05:30  INF]  Executed action TMS.API.Controllers.UserController.CreateUser (TMS.API) in 15236.788ms
+[2022-05-07 23:42:48.801 +05:30  INF]  Executed endpoint 'TMS.API.Controllers.UserController.CreateUser (TMS.API)'
+[2022-05-07 23:42:48.836 +05:30  INF]  Request finished HTTP/2 POST https://localhost:7161/User/Create application/json-patch+json 33161 - 500 247 application/problem+json;+charset=utf-8 15537.9555ms
+[2022-05-07 23:45:03.012 +05:30  INF]  Application is shutting down...
