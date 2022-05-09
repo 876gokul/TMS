@@ -5,10 +5,10 @@ import { HomeComponent } from './pages/home/home.component';
 import { UserListPageComponent } from './pages/user-list-page/user-list-page.component';
 import { UserViewComponent } from './pages/user-view/user-view.component';
 
-const routes: Routes = [{ path: '', component: AddUserComponent }];
+const routes: Routes = [{ path: '', component: AddUserComponent },{path:'Home/Profile',component:UserViewComponent}];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

@@ -16,7 +16,7 @@ namespace TMS.BAL
         public bool isDisabled { get; set; }
 
         public virtual Role Role { get; set; }
-        public virtual Department? Department { get; set; }
-        public virtual List<Course>? Courses { get; set; }
+        public virtual Department Department { get; set; }
+        public virtual List<Course> Courses { get; set; }
     }
 }

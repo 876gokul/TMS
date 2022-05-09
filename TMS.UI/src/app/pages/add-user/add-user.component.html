@@ -25,24 +25,24 @@
         <form action="" #ngForm (ngSubmit)="OnSubmit()">
 
             <div class="form-floating mb-4">
-                <input type="text" class="form-control" [value]="user.name" name="name">
+                <input type="text" class="form-control" placeholder="" name="name" [(ngModel)]="user.name">
                 <label for="floatingText">Fullname</label>
             </div>
             <div class="form-floating mb-4">
-                <input type="email" [value]="user.email" class="form-control" name="email">
+                <input type="email" [(ngModel)]="user.email" class="form-control" name="email">
                 <label for="floatingInput">Email address</label>
             </div>
             <div class="form-floating form-floating-sm mb-4 nav-item dropdown">
-                <input type="text" [value]="user.userName" class="form-control" name="username">
+                <input type="text" [(ngModel)]="user.userName" class="form-control" name="username">
                 <label for="floatingText">Username</label>
             </div>
             <div class="form-floating mb-4">
-                <input type="password" [value]="user.password" class="form-control" name="password">
+                <input type="password" [(ngModel)]="user.password" class="form-control" name="password">
                 <label for="floatingPassword">Password</label>
             </div>
             <div class="form-floating mb-4">
                 <select class="form-select" aria-label="Default select example" name="deaprtment"
-                    [value]="user.departmentId">
+                    [(ngModel)]="user.departmentId">
                     <option selected disabled value="0"> Department</option>
                     <option value="1">.Net</option>
                     <option value="2">Java</option>
@@ -51,9 +51,9 @@
             <hr>
             <div class="form-group mt-3">
                 <label class="mr-2">Upload your Image:</label>
-                <input type="file" name="file" [value]="user.image">
+                <input type="file" name="file" (change)="handleUpload($event)">
             </div>
-            <input type="hidden" name="role" [value]="user.roleId">
+            <input type="hidden" name="role" value="{{user.roleId}}">
             <hr>
             <button type="submit" class="btn btn-dark pe-4 px-4">Add</button>
         </form>

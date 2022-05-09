@@ -8,6 +8,9 @@ import { HomeComponent } from './pages/home/home.component';
 import { UserListPageComponent } from './pages/user-list-page/user-list-page.component';
 import { UserViewComponent } from './pages/user-view/user-view.component';
 import { AddUserComponent } from './pages/add-user/add-user.component';
+import { FormsModule } from '@angular/forms';
+
+
 
 @NgModule({
   declarations: [
@@ -18,8 +21,8 @@ import { AddUserComponent } from './pages/add-user/add-user.component';
     UserViewComponent,
     AddUserComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

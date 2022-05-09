@@ -18,7 +18,7 @@ export class UserViewComponent implements OnInit {
     this.getUserById();
   }
   getUserById() {
-    this.userService.getUsersById(1).subscribe((res) => {
+    this.userService.getUsersById(7).subscribe((res) => {
       console.log(res);
       this.data = res;
     });

@@ -78,7 +78,7 @@ namespace TMS.API.Services
                         user.Name = result.Name;
                         user.UserName = result.UserName;
                         user.Email = result.Email;
-                        user.Image = "data:image/jpeg;base64,"+ base64String;
+                        user.Image = "data:image/jpeg;base64," + base64String;
                         user.EmployeeId = result.EmployeeId;
                         user.isDisabled = result.isDisabled;
                         user.Role = result.Role;
@@ -95,7 +95,7 @@ namespace TMS.API.Services
                         user.Name = result.Name;
                         user.UserName = result.UserName;
                         user.Email = result.Email;
-                        user.Image = "data:image/jpeg;base64,"+ base64String;
+                        user.Image = "data:image/jpeg;base64," + base64String;
                         user.EmployeeId = result.EmployeeId;
                         user.isDisabled = result.isDisabled;
                         user.Role = result.Role;
@@ -123,8 +123,8 @@ namespace TMS.API.Services
                 Random ran = new Random();
                 User dbUser = new User();
                 dbUser.RoleId = user.RoleId;
-                if (user.DepartmentId != 0) dbUser.DepartmentId = user.DepartmentId;
-                dbUser.DepartmentId = null;
+                if (user.DepartmentId == 0) dbUser.DepartmentId = null;
+                dbUser.DepartmentId = user.DepartmentId;
                 dbUser.Name = user.Name;
                 dbUser.UserName = user.UserName;
                 dbUser.Password = HashPassword.Sha256(user.Password);

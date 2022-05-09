@@ -23,6 +23,7 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(buil
 
 // Making UserService available for the App
 builder.Services.AddTransient<UserService>();
+builder.Services.AddTransient<DepartmentService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
