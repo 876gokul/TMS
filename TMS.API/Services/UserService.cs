@@ -59,7 +59,7 @@ namespace TMS.API.Services
                 throw ex;
             }
         }
-        public GETUserDTO GetUserById(int id)
+        public User GetUserById(int id)
         {
             if (id == 0) throw new ArgumentException("GetUserById requires a vaild Id not zero");
             try
@@ -67,40 +67,20 @@ namespace TMS.API.Services
                 var dbUser = _context.Users.Find(id);
                 if (dbUser != null)
                 {
+                    User result = new User();
                     string base64String = Convert.ToBase64String(dbUser.Image, 0, dbUser.Image.Length);
                     if (dbUser.DepartmentId != null)
                     {
-                        var result = _context.Users.Where(u => u.Id == id).Include("Role").Include("Department").FirstOrDefault();
-                        GETUserDTO user = new GETUserDTO();
-                        user.Id = result.Id;
-                        user.RoleId = result.RoleId;
-                        user.DepartmentId = result.DepartmentId;
-                        user.Name = result.Name;
-                        user.UserName = result.UserName;
-                        user.Email = result.Email;
-                        user.Image = "data:image/jpeg;base64," + base64String;
-                        user.EmployeeId = result.EmployeeId;
-                        user.isDisabled = result.isDisabled;
-                        user.Role = result.Role;
-                        user.Department = result.Department;
-                        return user;
+                        result = _context.Users.Where(u => u.Id == id).Include("Role").Include("Department").FirstOrDefault();
+                        result.profilePic = "data:image/jpeg;base64," + base64String;
+                        result.Password = string.Empty;
                     }
                     else
                     {
-                        var result = _context.Users.Where(u => u.Id == id).Include("Role").FirstOrDefault();
-                        GETUserDTO user = new GETUserDTO();
-                        user.Id = result.Id;
-                        user.RoleId = result.RoleId;
-                        user.DepartmentId = result.DepartmentId;
-                        user.Name = result.Name;
-                        user.UserName = result.UserName;
-                        user.Email = result.Email;
-                        user.Image = "data:image/jpeg;base64," + base64String;
-                        user.EmployeeId = result.EmployeeId;
-                        user.isDisabled = result.isDisabled;
-                        user.Role = result.Role;
-                        return user;
+                        result = _context.Users.Where(u => u.Id == id).Include("Role").FirstOrDefault();
+                        result.Password = string.Empty;
                     }
+                    return result;
                 }
                 return null;
             }
@@ -115,26 +95,19 @@ namespace TMS.API.Services
                 throw ex;
             }
         }
-        public bool CreateUser(POSTUserDTO user)
+        public bool CreateUser(User user)
         {
             if (user == null) throw new ArgumentException("CreateUser requires a vaild User Object");
             try
             {
                 Random ran = new Random();
-                User dbUser = new User();
-                dbUser.RoleId = user.RoleId;
-                if (user.DepartmentId == 0) dbUser.DepartmentId = null;
-                dbUser.DepartmentId = user.DepartmentId;
-                dbUser.Name = user.Name;
-                dbUser.UserName = user.UserName;
-                dbUser.Password = HashPassword.Sha256(user.Password);
-                dbUser.Email = user.Email;
-                dbUser.Image = System.Convert.FromBase64String(user.Image);
-                dbUser.EmployeeId = ($"ACE{user.RoleId}{ran.Next(0, 10000)}");
-                dbUser.isDisabled = false;
-                dbUser.CreatedOn = DateTime.Now;
+                user.Password = HashPassword.Sha256(user.Password);
+                user.Image = System.Convert.FromBase64String(user.profilePic);
+                user.EmployeeId = ($"ACE{user.RoleId}{ran.Next(0, 10000)}");
+                user.isDisabled = false;
+                user.CreatedOn = DateTime.Now;
 
-                _context.Users.Add(dbUser);
+                _context.Users.Add(user);
                 _context.SaveChanges();
                 return true;
             }

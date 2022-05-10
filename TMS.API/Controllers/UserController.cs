@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using TMS.API.Services;
+using TMS.API.UtilityFunctions;
 using TMS.BAL;
+using TMS.DAL;
+
 namespace TMS.API.Controllers
 {
     [ApiController]
@@ -9,16 +12,6 @@ namespace TMS.API.Controllers
     {
         private readonly ILogger<UserController> _logger;
         private readonly UserService _userService;
-        private void logServiceInjectionFailed(InvalidOperationException ex)
-        {
-            _logger.LogCritical("An Critical error occured in User Controller. Please check the program.cs. It happend due to failure of userService injection");
-            _logger.LogTrace(ex.ToString());
-        }
-        private void logCheckUserServiceErrorMessage(Exception ex, string actionMethod)
-        {
-            _logger.LogWarning($"There was an error in {actionMethod}. please check the user service for more information");
-            _logger.LogError($"error thrown by user service " + ex.ToString());
-        }
         public UserController(ILogger<UserController> logger, UserService userService)
         {
             _logger = logger;
@@ -36,11 +29,11 @@ namespace TMS.API.Controllers
             }
             catch (System.InvalidOperationException ex)
             {
-                logServiceInjectionFailed(ex);
+                TMSLogger.logServiceInjectionFailed(ex, _logger);
             }
             catch (System.Exception ex)
             {
-                logCheckUserServiceErrorMessage(ex, nameof(GetAllUserByRole));
+                TMSLogger.logCheckUserServiceErrorMessage(ex, nameof(GetAllUserByRole), _logger);
             }
             return Problem("we are sorry, some thing went wrong");
         }
@@ -57,11 +50,11 @@ namespace TMS.API.Controllers
             }
             catch (System.InvalidOperationException ex)
             {
-                logServiceInjectionFailed(ex);
+                TMSLogger.logServiceInjectionFailed(ex, _logger);
             }
             catch (System.Exception ex)
             {
-                logCheckUserServiceErrorMessage(ex, nameof(GetAllUserByDepartment));
+                TMSLogger.logCheckUserServiceErrorMessage(ex, nameof(GetAllUserByDepartment), _logger);
             }
             return Problem("we are sorry, some thing went wrong");
         }
@@ -78,36 +71,40 @@ namespace TMS.API.Controllers
             }
             catch (System.InvalidOperationException ex)
             {
-                logServiceInjectionFailed(ex);
+                TMSLogger.logServiceInjectionFailed(ex, _logger);
             }
             catch (System.Exception ex)
             {
-                logCheckUserServiceErrorMessage(ex, nameof(GetUserById));
+                TMSLogger.logCheckUserServiceErrorMessage(ex, nameof(GetUserById), _logger);
             }
             return Problem("we are sorry, some thing went wrong");
         }
 
         [HttpPost]
-        public IActionResult CreateUser(POSTUserDTO user)
+        public IActionResult CreateUser(User user)
         {
             if (user == null) return BadRequest("User is required");
             if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            try
             {
-                try
+                var res = _userService.CreateUser(user);
+                var Result = new
                 {
-                    var res = _userService.CreateUser(user);
-                    if (res) return Ok("The User was Created successfully");
-                }
-                catch (System.InvalidOperationException ex)
-                {
-                    logServiceInjectionFailed(ex);
-                }
-                catch (System.Exception ex)
-                {
-                    logCheckUserServiceErrorMessage(ex, nameof(CreateUser));
-                }
-                return Problem("we are sorry, some thing went wrong");
+                    message = "The user created successfully"
+                };
+                if (res) return Ok(Result);
             }
+            catch (System.InvalidOperationException ex)
+            {
+                TMSLogger.logServiceInjectionFailed(ex, _logger);
+            }
+            catch (System.Exception ex)
+            {
+                TMSLogger.logCheckUserServiceErrorMessage(ex, nameof(CreateUser), _logger);
+            }
+            return Problem("we are sorry, some thing went wrong");
+
         }
 
         [HttpPut]
@@ -124,11 +121,11 @@ namespace TMS.API.Controllers
             }
             catch (System.InvalidOperationException ex)
             {
-                logServiceInjectionFailed(ex);
+                TMSLogger.logServiceInjectionFailed(ex, _logger);
             }
             catch (System.Exception ex)
             {
-                logCheckUserServiceErrorMessage(ex, nameof(UpdateUser));
+                TMSLogger.logCheckUserServiceErrorMessage(ex, nameof(UpdateUser), _logger);
             }
             return Problem("we are sorry, some thing went wrong");
 
@@ -146,11 +143,11 @@ namespace TMS.API.Controllers
             }
             catch (System.InvalidOperationException ex)
             {
-                logServiceInjectionFailed(ex);
+                TMSLogger.logServiceInjectionFailed(ex, _logger);
             }
             catch (System.Exception ex)
             {
-                logCheckUserServiceErrorMessage(ex, nameof(DisableUser));
+                TMSLogger.logCheckUserServiceErrorMessage(ex, nameof(DisableUser), _logger);
             }
             return Problem("we are sorry, some thing went wrong");
 
